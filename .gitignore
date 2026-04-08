@@ -3,3 +3,4 @@
 *.tfstate
 *.tfstate.*
 .DS_Store
+plan_file
