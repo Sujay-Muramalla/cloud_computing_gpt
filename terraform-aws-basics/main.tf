@@ -89,3 +89,20 @@ resource "aws_vpc_security_group_egress_rule" "all" {
 }
 
 
+data "aws_ssm_parameter" "al2023_ami" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
+}
+
+resource "aws_instance" "public_ec2" {
+  ami                         = data.aws_ssm_parameter.al2023_ami.value
+  instance_type               = "t4g.micro"
+  subnet_id                   = aws_subnet.public.id
+  vpc_security_group_ids      = [aws_security_group.public_ec2_sg.id]
+  key_name                    = "YAIC-KeyPair"
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "tf-public-ec2"
+  }
+}
+
